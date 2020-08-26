@@ -20,6 +20,10 @@ def remove_x(arr, what):
 
 # \/\/\/\/\/\/\  DO NOT TOUCH AREA  \/\/\/\/\/\/\ #
 
+import os
+
+os.system('clear')
+
 days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
 print("Is Wed on 'days' list?", is_on_list(days, "Wed"))
