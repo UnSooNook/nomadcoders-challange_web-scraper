@@ -24,6 +24,7 @@ import os
 
 os.system('clear')
 
+
 days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
 print("Is Wed on 'days' list?", is_on_list(days, "Wed"))
