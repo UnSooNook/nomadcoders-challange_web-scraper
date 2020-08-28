@@ -19,7 +19,7 @@ def getNumber():
     num = input("#: ")
     if num.isdecimal():
       num = int(num)
-      if num > 0 and num < (len(countryInfo) + 1):
+      if num > 0 and num <= len(countryInfo):
         num -= 1
         isNum = True
       else:
