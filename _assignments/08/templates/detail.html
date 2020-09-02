@@ -7,6 +7,30 @@
 </head>
 
 <body>
+    <header>
+        <h1>{{info.title}}</h1>
+        <div>
+            {{info.points}} points | By {{info.author}} |
+            <a href="{{info.url}}" target="_blank">{{info.url}}</a>
+        </div>
+    </header>
+    <main>
+        {% for comment in comments %}
+        <div>
+            {% if comment.author %}
+            <strong>{{comment.author}}</strong>
+            <p></p>
+            {{comment.text|safe}}
+            <p></p>
+            {% else %}
+
+            [deleted]
+
+            {% endif %}
+        </div>
+        <hr>
+        {% endfor %}
+    </main>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
-import requests
 from flask import Flask, render_template, request
+from scrapper import getFeed, getComments
 
 base_url = "http://hn.algolia.com/api/v1"
 
@@ -17,6 +17,30 @@ def make_detail_url(id):
 
 db = {}
 app = Flask("DayNine")
+
+@app.route("/")
+def home():
+    order = request.args.get("order_by")
+    if order == "new":
+        feed = db.get("new")
+        if not feed:
+            feed = getFeed(new)
+            db["new"] = feed
+        return render_template("new.html", feed=feed)
+    else:
+        feed = db.get("popular")
+        if not feed:
+            feed = getFeed(popular)
+            db["popular"] = feed
+        return render_template("index.html", feed=feed)
+
+
+@app.route("/<newsID>")
+def comments(newsID):
+    url = make_detail_url(newsID)
+    info, comments = getComments(url)
+
+    return render_template("detail.html", info=info, comments=comments)
 
 
 app.run(host="0.0.0.0")

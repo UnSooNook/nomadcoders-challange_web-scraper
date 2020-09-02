@@ -7,7 +7,33 @@
 </head>
 
 <body>
-
+    <header>
+        <h1>Nomad News</h1>
+        <div>
+            Order by :
+            <strong>Popular</strong>
+            |
+            <a href="/?order_by=new">New</a>
+        </div>
+    </header>
+    <main>
+        {% for news in feed %}
+        <div>
+            <div>
+                <a href="/{{news.id}}">
+                    <h3>{{news.title}}</h3>
+                </a>
+                (
+                <a href="{{news.url}}" target="_blank">{{news.url}}</a>
+                )
+            </div>
+            <div>
+                {{news.points}} points | By: {{news.author}} | {{news.num_comments}} comments
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+    </main>
 </body>
 
 </html>
