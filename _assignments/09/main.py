@@ -1,5 +1,6 @@
-import requests
 from flask import Flask, render_template, request
+
+from scrapper import getPosts
 
 """
 When you try to scrape reddit make sure to send the 'headers' on your request.
@@ -35,7 +36,19 @@ subreddits = [
 
 app = Flask("DayEleven")
 
+@app.route("/")
+def home():
+    return render_template("home.html", subreddits=subreddits)
 
+
+@app.route("/read")
+def read():
+    for subreddit in subreddits:
+        selected = request.args.get(subreddit)
+        if selected:
+            getPosts(subreddit)
+
+    return render_template("home.html", subreddits=subreddits)
 
 
 

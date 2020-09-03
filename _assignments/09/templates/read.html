@@ -7,7 +7,25 @@
 </head>
 
 <body>
-
+    <header>
+        <h1>
+            <a href="/">Reddit Reader</a>
+        </h1>
+        <h3>Reading:
+            {% for %}
+            {% endfor %}
+        </h3>
+    </header>
+    <main>
+        {% for %}
+        <div>
+            <h3>
+                <a href="{{}}" target="_blank">{{}}</a>
+            </h3>
+            <h4>{{}} upvotes · r/{{}}</h4>
+            <hr>
+        </div>
+        {% endfor %}
 </body>
 
 </html>
