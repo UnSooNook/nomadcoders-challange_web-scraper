@@ -25,7 +25,7 @@ def getPosts(subreddit, headers):
         
         link = "https://www.reddit.com" + post.find("div", {"class":"y8HYJ-y_lTUHkQIc1mdCq"}).find("a")["href"]
         
-        posts.append({"subreddit":subreddit,,"title":title, "upvote":upvote, "link":link})
+        posts.append({"subreddit":subreddit, "title":title, "upvote":upvote, "link":link})
 
     return posts
 
