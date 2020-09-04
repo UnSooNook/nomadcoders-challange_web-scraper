@@ -2,20 +2,30 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def getPosts(subreddit):
-    # url = f"https://www.reddit.com/r/{subreddit}/top/?t=month"
-    url = "https://www.reddit.com/r/javascript/top/?t=month"
-    result = requests.get(url)
+def getPosts(subreddit, headers):
+    posts = []
+    url = f"https://www.reddit.com/r/{subreddit}/top/?t=month"
+    result = requests.get(url, headers=headers)
     soup = BeautifulSoup(result.text, "html.parser")
-    body = soup.find("body")
+    feed = soup.find_all("div", {"class": "Post"})
 
+    for post in feed:
+        ad = post.find("span", {"class": "_2oEYZXchPfHwcf9mTMGMg8"})
+        if ad:
+            continue
 
+        title = post.find("h3", {"class": "_eYtD2XCVieq6emjKBH3m"}).string
 
-    feed = soup.find("div", {"id":"2x-container"})
-    feed2 = feed.find("div", {"class":"_1vyLCp-v-tE5QvZovwrASa"})
-    feed3 = soup.find_all("div", {"class":"scrollerItem"})
-    print(body)
-    # feed = soup.find_all("div", {"class":"_1OVBBWLtHoSPfGCRaPzpTf"})
-    # posts = feed.find("div", {"class":"_Post"})
+        upvote = post.find("div", {"class": "_1rZYMD_4xY3gRcSS3p8ODO"}).string
+        if "k" in upvote:
+            upvote = (float)(upvote.replace("k", ""))
+            upvote = (int)(upvote * 1000)
+        else:
+            upvote = (int)(upvote)
+        
+        link = "https://www.reddit.com" + post.find("div", {"class":"y8HYJ-y_lTUHkQIc1mdCq"}).find("a")["href"]
+        
+        posts.append({"subreddit":subreddit,,"title":title, "upvote":upvote, "link":link})
 
-getPosts("javascript")
+    return posts
+

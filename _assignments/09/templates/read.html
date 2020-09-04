@@ -12,17 +12,18 @@
             <a href="/">Reddit Reader</a>
         </h1>
         <h3>Reading:
-            {% for %}
+            {% for subreddit in reading %}
+            r/{{subreddit}}
             {% endfor %}
         </h3>
     </header>
     <main>
-        {% for %}
+        {% for post in posts %}
         <div>
             <h3>
-                <a href="{{}}" target="_blank">{{}}</a>
+                <a href="{{post['link']}}" target="_blank">{{post["title"]}}</a>
             </h3>
-            <h4>{{}} upvotes · r/{{}}</h4>
+            <h4>{{post["upvote"]}} upvotes · r/{{post["subreddit"]}}</h4>
             <hr>
         </div>
         {% endfor %}

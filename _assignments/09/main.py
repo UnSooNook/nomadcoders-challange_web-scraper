@@ -21,17 +21,7 @@ https://www.reddit.com/r/{subreddit}/top/?t=month
 This will give you the top posts in per month.
 """
 
-subreddits = [
-    "javascript",
-    "reactjs",
-    "reactnative",
-    "programming",
-    "css",
-    "golang",
-    "flutter",
-    "rust",
-    "django"
-]
+subreddits = ["javascript", "reactjs", "reactnative", "programming", "css", "golang", "flutter", "rust", "django"]
 
 
 app = Flask("DayEleven")
@@ -43,13 +33,17 @@ def home():
 
 @app.route("/read")
 def read():
+    reading = []
+    posts = []
     for subreddit in subreddits:
         selected = request.args.get(subreddit)
         if selected:
-            getPosts(subreddit)
-
-    return render_template("home.html", subreddits=subreddits)
-
+            reading.append(subreddit)
+            posts = posts + getPosts(subreddit, headers)
+    
+    posts = sorted(posts, key=lambda post: post["upvote"], reverse=True)
+    
+    return render_template("read.html", reading=reading, posts=posts)
 
 
 app.run(host="0.0.0.0")
