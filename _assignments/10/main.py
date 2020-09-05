@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, send_file
 
 from scrapper import getJobs
+from exporter import saveToFile
 
 """
 These are the URLs that will give you remote jobs for the word 'python'
@@ -11,9 +12,7 @@ https://remoteok.io/remote-dev+python-jobs
 
 Good luck!
 """
-
-headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'}
-
+db = {}
 
 app = Flask("DayThirteen")
 
@@ -21,6 +20,39 @@ app = Flask("DayThirteen")
 def home():
     return render_template("home.html")
 
+
+@app.route("/result")
+def result():
+    term = request.args.get("term")
+    if term:
+        term = term.lower()
+        existingJobs = db.get(term)
+        if existingJobs:
+            jobs = existingJobs
+        else:
+            jobs = getJobs(term)
+            db[term] = jobs
+    else:
+        return redirect("/")
+
+    return render_template("result.html", term=term, jobCnt=len(jobs), jobs=jobs)
+
+
+@app.route("/export")
+def export():
+    try:
+        term = request.args.get("term")
+        if not term:
+            raise Exception()
+        term = term.lower()
+        jobs = db.get(term)
+        if not jobs:
+            raise Exception()
+        saveToFile(term, jobs)
+
+        return send_file(f"{term}-jobs.csv", mimetype="text/csv", as_attachment=True, attachment_filename=f"{term}-jobs.csv")
+    except:
+        return redirect("/")
 
 
 app.run(host="0.0.0.0")
